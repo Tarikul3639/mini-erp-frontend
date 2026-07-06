@@ -2,8 +2,8 @@ import {
     type BaseQueryFn,
     type FetchArgs,
     type FetchBaseQueryError,
-    fetchBaseQuery,
     createApi,
+    fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react"
 
 import { tagTypes } from "./tagTypes"
@@ -32,10 +32,7 @@ const baseQuery: BaseQueryFn<
 
 export const baseApi = createApi({
     reducerPath: "baseApi",
-
     baseQuery,
-
     tagTypes,
-
     endpoints: () => ({}),
 })

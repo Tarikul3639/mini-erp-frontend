@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import UserNav from "./user-nav";
 
 export default function AppNavbar() {
     return (
@@ -40,6 +41,8 @@ export default function AppNavbar() {
                     <Sun className="size-5 dark:hidden" />
                     <Moon className="hidden size-5 dark:block" />
                 </Button>
+
+                <UserNav />
             </div>
         </header>
     );
