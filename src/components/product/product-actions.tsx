@@ -2,19 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+    Edit,
+    MoreHorizontal,
+    Trash2,
+} from "lucide-react";
+
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-import { Button } from "@/components/ui/button";
-
-import {
-    Edit,
-    MoreHorizontal,
-    Trash2,
-} from "lucide-react";
 
 import DeleteProductDialog from "./delete-product-dialog";
 
@@ -25,8 +23,7 @@ interface Props {
 export default function ProductActions({
     productId,
 }: Props) {
-    const navigate =
-        useNavigate();
+    const navigate = useNavigate();
 
     const [open, setOpen] =
         useState(false);
@@ -35,13 +32,9 @@ export default function ProductActions({
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                    >
-                        <MoreHorizontal className="size-4" />
-                    </Button>
+                    <MoreHorizontal className="size-4" />
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end">
@@ -70,12 +63,8 @@ export default function ProductActions({
 
             <DeleteProductDialog
                 open={open}
-                onOpenChange={
-                    setOpen
-                }
-                productId={
-                    productId
-                }
+                onOpenChange={setOpen}
+                productId={productId}
             />
         </>
     );

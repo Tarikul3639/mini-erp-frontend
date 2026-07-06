@@ -7,8 +7,6 @@ import {
     Trash2,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -34,13 +32,9 @@ export default function CustomerActions({
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                    >
-                        <MoreHorizontal className="size-4" />
-                    </Button>
+                    <MoreHorizontal className="size-4" />
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end">
@@ -69,12 +63,8 @@ export default function CustomerActions({
 
             <DeleteCustomerDialog
                 open={open}
-                onOpenChange={
-                    setOpen
-                }
-                customerId={
-                    customerId
-                }
+                onOpenChange={setOpen}
+                customerId={customerId}
             />
         </>
     );
