@@ -2,17 +2,17 @@ import { Boxes } from "lucide-react";
 
 export default function Logo() {
     return (
-        <div className="flex items-center gap-3">
-            <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-lg">
-                <Boxes className="size-5" />
+        <div className="flex items-center gap-3 overflow-hidden">
+            <div className="bg-primary text-primary-foreground flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+                <Boxes className="h-5 w-5" />
             </div>
 
-            <div>
-                <h2 className="text-sm font-semibold">
+            <div className="min-w-0 group-data-[collapsible=icon]:hidden">
+                <h2 className="truncate text-sm font-semibold">
                     Mini ERP
                 </h2>
 
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground truncate text-xs">
                     Inventory System
                 </p>
             </div>

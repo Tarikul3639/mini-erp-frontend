@@ -9,7 +9,7 @@ interface PageToolbarProps {
     buttonText?: string
 
     onSearchChange: (value: string) => void
-    onCreate: () => void
+    onCreate?: () => void
 }
 
 export default function PageToolbar({
@@ -32,10 +32,12 @@ export default function PageToolbar({
                 />
             </div>
 
-            <Button onClick={onCreate}>
-                <Plus className="mr-2 size-4" />
-                {buttonText}
-            </Button>
+            {onCreate && (
+                <Button onClick={onCreate}>
+                    <Plus className="mr-2 size-4" />
+                    {buttonText}
+                </Button>
+            )}
         </div>
     )
 }

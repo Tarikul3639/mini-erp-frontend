@@ -1,32 +1,45 @@
-import { useState } from "react"
+import { useState } from "react";
 
-import PageHeader from "@/components/common/page-header"
-import ProductTable from "@/components/product/product-table"
-import PageToolbar from "@/components/common/page-toolbar"
-import { useDebounce } from "use-debounce"
-import { useNavigate } from "react-router-dom"
+import { useDebounce } from "use-debounce";
+import { useNavigate } from "react-router-dom";
+
+import PageHeader from "@/components/common/page-header";
+import PageToolbar from "@/components/common/page-toolbar";
+import ProductTable from "@/components/product/product-table";
+
+import { useRole } from "@/hooks/useRole";
 
 export default function ProductsPage() {
     const navigate = useNavigate();
-    
-    const [search, setSearch] = useState("")
 
-    const [debouncedSearch] = useDebounce(search, 500)
+    const { isAdmin, isManager } = useRole();
 
-    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState("");
+
+    const [debouncedSearch] = useDebounce(search, 500);
+
+    const [page, setPage] = useState(1);
 
     return (
         <div className="space-y-6">
-            <PageHeader title="Products" description="Manage all products." />
+            <PageHeader
+                title="Products"
+                description="Manage all products."
+            />
 
             <PageToolbar
                 search={search}
                 onSearchChange={setSearch}
-                onCreate={() =>
-                    navigate("/products/create")
-                }
                 searchPlaceholder="Search products..."
                 buttonText="Add Product"
+                onCreate={
+                    isAdmin || isManager
+                        ? () =>
+                              navigate(
+                                  "/products/create"
+                              )
+                        : undefined
+                }
             />
 
             <ProductTable
@@ -35,5 +48,5 @@ export default function ProductsPage() {
                 onPageChange={setPage}
             />
         </div>
-    )
+    );
 }

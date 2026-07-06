@@ -1,12 +1,14 @@
-import { User } from "lucide-react";
+import { User } from "lucide-react"
 
-import { useGetCustomersQuery } from "@/redux/features/customer/customerApi";
+import { useRole } from "@/hooks/useRole"
 
-import EmptyState from "@/components/common/empty-state";
-import PageLoader from "@/components/common/page-loader";
-import Pagination from "@/components/common/pagination";
+import { useGetCustomersQuery } from "@/redux/features/customer/customerApi"
 
-import CustomerActions from "./customer-actions";
+import EmptyState from "@/components/common/empty-state"
+import PageLoader from "@/components/common/page-loader"
+import Pagination from "@/components/common/pagination"
+
+import CustomerActions from "./customer-actions"
 
 import {
     Table,
@@ -15,38 +17,41 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 
 interface Props {
-    page: number;
-    search: string;
-    onPageChange: (page: number) => void;
+    page: number
+    search: string
+    onPageChange: (page: number) => void
 }
 
-export default function CustomerTable({
-    page,
-    search,
-    onPageChange,
-}: Props) {
-    const { data, isLoading } =
-        useGetCustomersQuery({
-            page,
-            limit: 10,
-            search,
-        });
+export default function CustomerTable({ page, search, onPageChange }: Props) {
+    const { isAdmin, isManager } = useRole()
+
+    const canManage = isAdmin || isManager
+
+    const { data, isLoading } = useGetCustomersQuery({
+        page,
+        limit: 10,
+        search,
+    })
 
     if (isLoading) {
-        return <PageLoader />;
+        return <PageLoader />
     }
 
     if (!data || data.data.length === 0) {
         return (
             <EmptyState
                 title="No customers found"
-                description="Create your first customer."
+                description={
+                    canManage
+                        ? "Create your first customer."
+                        : "No customers are available."
+                }
                 icon={User}
             />
-        );
+        )
     }
 
     return (
@@ -55,82 +60,46 @@ export default function CustomerTable({
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>
-                                Name
-                            </TableHead>
+                            <TableHead>Name</TableHead>
 
-                            <TableHead>
-                                Email
-                            </TableHead>
+                            <TableHead>Email</TableHead>
 
-                            <TableHead>
-                                Phone
-                            </TableHead>
+                            <TableHead>Phone</TableHead>
 
-                            <TableHead>
-                                Address
-                            </TableHead>
+                            <TableHead>Address</TableHead>
 
-                            <TableHead className="text-center">
-                                Actions
-                            </TableHead>
+                            {canManage && (
+                                <TableHead className="text-center">Actions</TableHead>
+                            )}
                         </TableRow>
                     </TableHeader>
 
                     <TableBody>
-                        {data.data.map(
-                            (customer) => (
-                                <TableRow
-                                    key={
-                                        customer._id
-                                    }
-                                >
-                                    <TableCell>
-                                        <div className="flex items-center gap-3">
-                                            <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full font-semibold">
-                                                {customer.name
-                                                    .charAt(
-                                                        0
-                                                    )
-                                                    .toUpperCase()}
-                                            </div>
-
-                                            <span className="font-medium">
-                                                {
-                                                    customer.name
-                                                }
-                                            </span>
+                        {data.data.map((customer) => (
+                            <TableRow key={customer._id}>
+                                <TableCell>
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary">
+                                            {customer.name.charAt(0).toUpperCase()}
                                         </div>
-                                    </TableCell>
 
-                                    <TableCell>
-                                        {
-                                            customer.email
-                                        }
-                                    </TableCell>
+                                        <span className="font-medium">{customer.name}</span>
+                                    </div>
+                                </TableCell>
 
-                                    <TableCell>
-                                        {
-                                            customer.phone
-                                        }
-                                    </TableCell>
+                                <TableCell>{customer.email}</TableCell>
 
-                                    <TableCell>
-                                        {
-                                            customer.address
-                                        }
-                                    </TableCell>
+                                <TableCell>{customer.phone}</TableCell>
 
+                                <TableCell>{customer.address}</TableCell>
+
+                                {canManage && (
                                     <TableCell className="text-center">
-                                        <CustomerActions
-                                            customerId={
-                                                customer._id
-                                            }
-                                        />
+                                        <CustomerActions customerId={customer._id} />
                                     </TableCell>
-                                </TableRow>
-                            )
-                        )}
+                                )}
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </div>
@@ -138,14 +107,10 @@ export default function CustomerTable({
             <div className="border-t p-4">
                 <Pagination
                     page={page}
-                    totalPage={
-                        data.meta.totalPage
-                    }
-                    onPageChange={
-                        onPageChange
-                    }
+                    totalPage={data.meta.totalPage}
+                    onPageChange={onPageChange}
                 />
             </div>
         </div>
-    );
+    )
 }

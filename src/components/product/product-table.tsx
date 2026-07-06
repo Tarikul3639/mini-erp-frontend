@@ -1,11 +1,14 @@
-import { Package } from "lucide-react";
+import { Package } from "lucide-react"
 
-import { useGetProductsQuery } from "@/redux/features/product/productApi";
+import { useRole } from "@/hooks/useRole"
 
-import PageLoader from "@/components/common/page-loader";
-import EmptyState from "@/components/common/empty-state";
-import ProductActions from "./product-actions";
-import Pagination from "@/components/common/pagination";
+import { useGetProductsQuery } from "@/redux/features/product/productApi"
+
+import PageLoader from "@/components/common/page-loader"
+import EmptyState from "@/components/common/empty-state"
+import Pagination from "@/components/common/pagination"
+
+import ProductActions from "./product-actions"
 
 import {
     Table,
@@ -14,38 +17,41 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 
 interface Props {
-    page: number;
-    search: string;
-    onPageChange: (page: number) => void;
+    page: number
+    search: string
+    onPageChange: (page: number) => void
 }
 
-export default function ProductTable({
-    page,
-    search,
-    onPageChange,
-}: Props) {
-    const { data, isLoading } =
-        useGetProductsQuery({
-            page,
-            limit: 10,
-            search,
-        });
+export default function ProductTable({ page, search, onPageChange }: Props) {
+    const { isAdmin, isManager } = useRole()
+
+    const canManage = isAdmin || isManager
+
+    const { data, isLoading } = useGetProductsQuery({
+        page,
+        limit: 10,
+        search,
+    })
 
     if (isLoading) {
-        return <PageLoader />;
+        return <PageLoader />
     }
 
     if (!data || data.data.length === 0) {
         return (
             <EmptyState
                 title="No products found"
-                description="Create your first product."
+                description={
+                    canManage
+                        ? "Create your first product."
+                        : "No products are available."
+                }
                 icon={Package}
             />
-        );
+        )
     }
 
     return (
@@ -54,113 +60,80 @@ export default function ProductTable({
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>
-                                Product
-                            </TableHead>
+                            <TableHead>Product</TableHead>
 
-                            <TableHead>
-                                SKU
-                            </TableHead>
+                            <TableHead>SKU</TableHead>
 
-                            <TableHead>
-                                Category
-                            </TableHead>
+                            <TableHead>Category</TableHead>
 
-                            <TableHead className="text-right">
-                                Stock
-                            </TableHead>
+                            <TableHead className="text-right">Stock</TableHead>
 
-                            <TableHead className="text-right">
-                                Purchase
-                            </TableHead>
+                            <TableHead className="text-right">Purchase</TableHead>
 
-                            <TableHead className="text-right">
-                                Selling
-                            </TableHead>
+                            <TableHead className="text-right">Selling</TableHead>
 
-                            <TableHead className="text-center">
-                                Actions
-                            </TableHead>
+                            {canManage && (
+                                <TableHead className="text-center">Actions</TableHead>
+                            )}
                         </TableRow>
                     </TableHeader>
 
                     <TableBody>
-                        {data.data.map(
-                            (product) => (
-                                <TableRow
-                                    key={
-                                        product._id
-                                    }
-                                >
-                                    <TableCell>
-                                        <div className="flex items-center gap-3">
-                                            <img
-                                                src={
-                                                    product.image
-                                                }
-                                                alt={
-                                                    product.name
-                                                }
-                                                className="h-12 w-12 rounded-md border object-cover"
-                                            />
-
-                                            <div>
-                                                <p className="font-medium">
-                                                    {
-                                                        product.name
-                                                    }
-                                                </p>
-
-                                                <p className="text-muted-foreground text-xs">
-                                                    ID:{" "}
-                                                    {
-                                                        product._id
-                                                    }
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </TableCell>
-
-                                    <TableCell>
-                                        {
-                                            product.sku
-                                        }
-                                    </TableCell>
-
-                                    <TableCell>
-                                        <span className="rounded-md bg-muted px-2 py-1 text-xs font-medium">
-                                            {
-                                                product.category
-                                            }
-                                        </span>
-                                    </TableCell>
-
-                                    <TableCell className="text-right">
-                                        {
-                                            product.stockQuantity
-                                        }
-                                    </TableCell>
-
-                                    <TableCell className="text-right">
-                                        ৳
-                                        {product.purchasePrice.toLocaleString()}
-                                    </TableCell>
-
-                                    <TableCell className="text-right font-medium">
-                                        ৳
-                                        {product.sellingPrice.toLocaleString()}
-                                    </TableCell>
-
-                                    <TableCell className="text-center">
-                                        <ProductActions
-                                            productId={
-                                                product._id
-                                            }
+                        {data.data.map((product) => (
+                            <TableRow key={product._id}>
+                                <TableCell>
+                                    <div className="flex items-center gap-3">
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="h-12 w-12 rounded-md border object-cover"
                                         />
+
+                                        <div>
+                                            <p className="font-medium">{product.name}</p>
+
+                                            <p className="text-xs text-muted-foreground">
+                                                SKU: {product.sku}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </TableCell>
+
+                                <TableCell>{product.sku}</TableCell>
+
+                                <TableCell>
+                                    <span className="rounded-md bg-muted px-2 py-1 text-xs font-medium">
+                                        {product.category}
+                                    </span>
+                                </TableCell>
+
+                                <TableCell className="text-right">
+                                    <span
+                                        className={
+                                            product.stockQuantity < 5
+                                                ? "font-semibold text-destructive"
+                                                : ""
+                                        }
+                                    >
+                                        {product.stockQuantity}
+                                    </span>
+                                </TableCell>
+
+                                <TableCell className="text-right">
+                                    ৳{product.purchasePrice.toLocaleString()}
+                                </TableCell>
+
+                                <TableCell className="text-right font-medium">
+                                    ৳{product.sellingPrice.toLocaleString()}
+                                </TableCell>
+
+                                {canManage && (
+                                    <TableCell className="text-center">
+                                        <ProductActions productId={product._id} />
                                     </TableCell>
-                                </TableRow>
-                            )
-                        )}
+                                )}
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </div>
@@ -168,14 +141,10 @@ export default function ProductTable({
             <div className="border-t p-4">
                 <Pagination
                     page={page}
-                    totalPage={
-                        data.meta.totalPage
-                    }
-                    onPageChange={
-                        onPageChange
-                    }
+                    totalPage={data.meta.totalPage}
+                    onPageChange={onPageChange}
                 />
             </div>
         </div>
-    );
+    )
 }

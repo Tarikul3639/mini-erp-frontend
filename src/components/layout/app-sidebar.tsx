@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"
 
 import {
     Sidebar,
@@ -8,19 +8,19 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/sidebar"
 
-import { navigation } from "@/constants/navigation";
-import Logo from "@/components/common/logo";
+import Logo from "@/components/common/logo"
+import { navigation } from "@/constants/navigation"
 
 export default function AppSidebar() {
     return (
-        <Sidebar variant="inset" collapsible="icon">
-            <SidebarHeader className="border-b p-4">
+        <Sidebar variant="sidebar" collapsible="offcanvas" className="border-r">
+            <SidebarHeader className="border-b px-3 py-4">
                 <Logo />
             </SidebarHeader>
 
-            <SidebarContent className="p-3">
+            <SidebarContent className="px-2 py-3">
                 <SidebarMenu>
                     {navigation.map((item) => (
                         <SidebarMenuItem key={item.href}>
@@ -29,10 +29,11 @@ export default function AppSidebar() {
                                     <SidebarMenuButton
                                         isActive={isActive}
                                         tooltip={item.title}
+                                        className="h-11 rounded-lg"
                                     >
-                                        <item.icon />
+                                        <item.icon className="size-5 shrink-0" />
 
-                                        <span>{item.title}</span>
+                                        <span className="truncate">{item.title}</span>
                                     </SidebarMenuButton>
                                 )}
                             </NavLink>
@@ -41,11 +42,11 @@ export default function AppSidebar() {
                 </SidebarMenu>
             </SidebarContent>
 
-            <SidebarFooter className="border-t p-4">
-                <p className="text-muted-foreground text-xs">
+            <SidebarFooter className="border-t px-3 py-4">
+                <p className="text-center text-xs text-muted-foreground">
                     Mini ERP v1.0.0
                 </p>
             </SidebarFooter>
         </Sidebar>
-    );
+    )
 }

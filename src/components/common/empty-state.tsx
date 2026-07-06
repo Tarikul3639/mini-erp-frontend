@@ -1,9 +1,9 @@
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react"
 
 interface Props {
-    title: string;
-    description: string;
-    icon: LucideIcon;
+    title: string
+    description: string
+    icon: LucideIcon
 }
 
 export default function EmptyState({
@@ -12,18 +12,18 @@ export default function EmptyState({
     icon: Icon,
 }: Props) {
     return (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-20 text-center">
-            <div className="bg-muted rounded-full p-4">
-                <Icon className="text-muted-foreground size-10" />
+        <div className="flex flex-col items-center justify-center rounded-sm border border-dashed px-6 py-12 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-muted">
+                <Icon className="h-6 w-6 text-muted-foreground" />
             </div>
 
-            <h3 className="mt-6 text-xl font-semibold">
+            <h3 className="mt-4 text-base font-semibold">
                 {title}
             </h3>
 
-            <p className="text-muted-foreground mt-2 max-w-md">
+            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
                 {description}
             </p>
         </div>
-    );
+    )
 }

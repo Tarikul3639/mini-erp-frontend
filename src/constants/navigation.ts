@@ -3,7 +3,8 @@ import {
     Package,
     Users,
     ShoppingCart,
-} from "lucide-react";
+    UserCircle,
+} from "lucide-react"
 
 export const navigation = [
     {
@@ -29,4 +30,9 @@ export const navigation = [
         href: "/sales",
         icon: ShoppingCart,
     },
-];
+    {
+        title: "Profile",
+        href: "/profile",
+        icon: UserCircle,
+    },
+]

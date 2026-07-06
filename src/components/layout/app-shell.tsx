@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import AppSidebar from "./app-sidebar";
-import AppNavbar from "./app-navbar";
+import AppNavbar from "../navbar/app-navbar";
 
 interface Props {
     children: ReactNode;

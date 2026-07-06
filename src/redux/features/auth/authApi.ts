@@ -18,17 +18,26 @@ export const authApi = baseApi.injectEndpoints({
             }),
         }),
 
-        me: builder.query({
-            query: () => ({
-                url: "/auth/me",
+        changePassword: builder.mutation<
+            {
+                success: boolean;
+                message: string;
+            },
+            {
+                currentPassword: string;
+                newPassword: string;
+            }
+        >({
+            query: (body) => ({
+                url: "/auth/change-password",
+                method: "PATCH",
+                body,
             }),
-
-            providesTags: ["AUTH"],
         }),
     }),
 });
 
 export const {
     useLoginMutation,
-    useMeQuery,
+    useChangePasswordMutation,
 } = authApi;
