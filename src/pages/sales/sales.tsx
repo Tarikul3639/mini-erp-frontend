@@ -1,17 +1,13 @@
 import { useState } from "react";
-
-import {
-    useDebounce,
-} from "use-debounce";
-
+import { useDebounce } from "use-debounce";
 import PageHeader from "@/components/common/page-header";
-import CustomerTable from "@/components/customer/customer-table";
+import SaleTable from "@/components/sale/sale-table";
 import PageToolbar from "@/components/common/page-toolbar";
 import { useNavigate } from "react-router-dom";
 
-export default function CustomersPage() {
+export default function SalesPage() {
     const navigate = useNavigate();
-    
+
     const [search, setSearch] =
         useState("");
 
@@ -24,21 +20,21 @@ export default function CustomersPage() {
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Customers"
-                description="Manage all customers."
+                title="Sales"
+                description="Manage sales history."
             />
 
             <PageToolbar
                 search={search}
                 onSearchChange={setSearch}
                 onCreate={() =>
-                    navigate("/customers/create")
+                    navigate("/sales/create")
                 }
-                searchPlaceholder="Search customers..."
-                buttonText="Add Customer"
+                searchPlaceholder="Search sales..."
+                buttonText="Create Sale"
             />
 
-            <CustomerTable
+            <SaleTable
                 page={page}
                 search={
                     debouncedSearch

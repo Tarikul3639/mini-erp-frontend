@@ -1,12 +1,14 @@
 import { useState } from "react"
 
 import PageHeader from "@/components/common/page-header"
-
-import ProductToolbar from "@/components/product/product-toolbar"
 import ProductTable from "@/components/product/product-table"
+import PageToolbar from "@/components/common/page-toolbar"
 import { useDebounce } from "use-debounce"
+import { useNavigate } from "react-router-dom"
 
 export default function ProductsPage() {
+    const navigate = useNavigate();
+    
     const [search, setSearch] = useState("")
 
     const [debouncedSearch] = useDebounce(search, 500)
@@ -17,13 +19,14 @@ export default function ProductsPage() {
         <div className="space-y-6">
             <PageHeader title="Products" description="Manage all products." />
 
-            <ProductToolbar
+            <PageToolbar
                 search={search}
-                onSearchChange={(value) => {
-                    setSearch(value)
-
-                    setPage(1)
-                }}
+                onSearchChange={setSearch}
+                onCreate={() =>
+                    navigate("/products/create")
+                }
+                searchPlaceholder="Search products..."
+                buttonText="Add Product"
             />
 
             <ProductTable

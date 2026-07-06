@@ -19,6 +19,11 @@ import CustomersPage from "@/pages/customers/customers";
 import CreateCustomerPage from "@/pages/customers/create-customer";
 import EditCustomerPage from "@/pages/customers/edit-customer";
 
+// Sale
+import SalesPage from "@/pages/sales/sales";
+import CreateSalePage from "@/pages/sales/create-sale";
+import SaleDetailsPage from "@/pages/sales/sale-details";
+
 export const router = createBrowserRouter([
     {
         path: "/login",
@@ -84,7 +89,20 @@ export const router = createBrowserRouter([
             // Sales
             {
                 path: "sales",
-                element: <div>Sales</div>,
+                children: [
+                    {
+                        index: true,
+                        element: <SalesPage />,
+                    },
+                    {
+                        path: "create",
+                        element: <CreateSalePage />,
+                    },
+                    {
+                        path: ":id",
+                        element: <SaleDetailsPage />,
+                    },
+                ],
             },
         ],
     },
