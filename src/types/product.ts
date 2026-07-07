@@ -11,6 +11,12 @@ export interface Product {
     updatedAt: string;
 }
 
+export interface ProductResponse {
+    success: boolean;
+    message: string;
+    data: Product;
+}
+
 export interface ProductListResponse {
     success: boolean;
     message: string;

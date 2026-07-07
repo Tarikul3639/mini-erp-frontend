@@ -2,6 +2,7 @@ import { baseApi } from "@/redux/baseApi";
 
 import type {
     Product,
+    ProductResponse,
     ProductListResponse,
 } from "@/types/product";
 
@@ -83,7 +84,7 @@ export const productApi =
             }),
 
             // Get a single product by ID
-            getProduct: builder.query<Product, string>({
+            getProduct: builder.query<ProductResponse, string>({
                 query: (id) => ({
                     url: `/products/${id}`,
                 }),

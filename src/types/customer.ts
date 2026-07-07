@@ -8,6 +8,12 @@ export interface Customer {
     updatedAt: string;
 }
 
+export interface CustomerResponse {
+    success: boolean;
+    message: string;
+    data: Customer;
+}
+
 export interface CustomerListResponse {
     success: boolean;
     message: string;
